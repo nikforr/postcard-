@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipping Letter Website</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .postcard-container {
+            perspective: 2000px;
+            cursor: default;
+        }
+
+        .flip-container {
+            width: 625px; /* Initial width */
+            height: 650px; /* Initial height */
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s, width 0.5s, height 0.5s;
+        }
+
+            .flip-container.flipped {
+                width: auto; /* Adjusted width when flipped */
+                height: auto; /* Adjusted height when flipped */
+            }
+
+            .flip-container:not(.clickable):hover .flipper {
+                transform: rotateY(180deg);
+            }
+
+        .flipper {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transform-origin: 100% 50%;
+            transition: transform 0.5s;
+        }
+
+        .postcard, .hidden-text {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Make the postcard unclickable by default */
+        }
+
+            .postcard.clickable {
+                pointer-events: auto; /* Make the postcard clickable when it has the "clickable" class */
+            }
+
+            .postcard img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 10px;
+                margin-bottom: 10px;
+            }
+
+        .hidden-text {
+            transform: rotateY(180deg);
+            display: none;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
+            font-size: 20px;
+        }
+
+            .hidden-text h3 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+        .flip-container:hover .postcard {
+            display: none;
+        }
+
+        .flip-container:hover .hidden-text {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="postcard-container">
+        <div class="flip-container" onclick="flipPostcard()" >
+            <div class="flipper">
+                <div class="postcard" id="postcard">
+                    <img src="untitled.png" alt="Postcard Image">
+                    <h2>Листівочка!</h2>
+                    <p>For dear Sonya</p>
+                </div>
+                <div class="hidden-text" id="hiddenText">
+                    <h3>Для коханої жінки</h3>
+                    <p>
+                      
+                        Оскільки в мене не дуже склались стосунки з фізичною версією листівки і ми перебуваємо у скаладних відносинах з нею, тут буде її елктронна версія.
+                        Наступного разу, як приїдеш, я сподіваюсь що наші стосунки з нею опкращаться і в тебе буде, що потримати в руках, окрім мене).
+                        Сподіваюсь якнайшвидше побачитись і дуже сильно обійняти тебе. Я знаю, що ти дуже стараєшся і впевнений, що ти впораєшся з усіма складнощами, як з університетом зараз, так і з усіма життєвими етапами в майбутньому.
+                        Я буду завжди підтримувати тебе і дарувати листіки, якщо звістно будеш мені нагадувати). Звісно, хотілось би більше не думати над альтернативами фізичних листівок, а мати змогу завжди тебе бачити счастливою і радісно хрюкаючою поруч в нашій квартирі,
+                        що сподіваюсь і буде в найближчому часі. Дуже сильно тебе люблю і цілую. 
+                        
+
+
+                    </p>
+                    <p>
+                        Твій, Артем
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipPostcard() {
+            var flipContainer = document.querySelector('.flip-container');
+            var postcard = document.getElementById('postcard');
+            var hiddenText = document.getElementById('hiddenText');
+
+            flipContainer.classList.toggle('flipped');
+
+            if (flipContainer.classList.contains('flipped')) {
+                // Get the width and height of the hidden text
+                var textWidth = hiddenText.scrollWidth;
+                var textHeight = hiddenText.scrollHeight;
+
+                // Set the postcard dimensions to match the hidden text
+                postcard.style.width = textWidth + 'px';
+                postcard.style.height = textHeight + 'px';
+            } else {
+                // Reset postcard dimensions when not flipped
+                postcard.style.width = '';
+                postcard.style.height = '';
+                postcard.style.display = 'flex'; // Make the postcard visible again
+                hiddenText.style.display = 'none';
+            }
+        }
+
+        function makeClickable() {
+            var postcard = document.getElementById('postcard');
+            postcard.classList.add('clickable');
+        }
+
+        function makeUnClickable() {
+            var postcard = document.getElementById('postcard');
+            postcard.classList.remove('clickable');
+        }
+    </script>
+</body>
+</html>
